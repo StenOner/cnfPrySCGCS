@@ -1,0 +1,224 @@
+﻿@model cnfPrySCGCS.Models.cnfMNTpMetodologiaEntregable.cnfMNTpMetodologiaEntregables
+@{
+    ViewBag.Title = "Entregables de Fase";
+    ViewBag.subTitle = "Registrar Entregable";
+
+    List<SelectListItem> listEstados = new List<SelectListItem>();
+
+    listEstados.Add(new SelectListItem() { Text = "Activo", Value = "Activo" });
+    listEstados.Add(new SelectListItem() { Text = "Inactivo", Value = "Inactivo" });
+
+    List<cnfPrySCGCS.Models.cnfMNTpMetodologiaEntregable.cnfMNTpMetodologiaEntregables> GobjListarEntregable = ViewBag.GobjListarEntregable;
+    List<cnfPrySCGCS.Models.cnfMTDpMetodologia> GobjListarMetodologia = ViewBag.GobjListarMetodologia;
+    List<cnfPrySCGCS.Models.cnfMEFpMetodologiaFase> GobjListarFase = ViewBag.GobjListarFase;
+    int LintMetodologiaSeleccionada = -1;
+    try
+    {
+        LintMetodologiaSeleccionada = ViewBag.GintMetodologiaSeleccionada;
+    }
+    catch
+    {
+
+    }
+    bool LblnMensaje = false;
+    try
+    {
+        LblnMensaje = ViewBag.GblnMensaje;
+    }
+    catch
+    {
+
+    }
+}
+
+@try
+{
+    if (LblnMensaje)
+    {
+        string LstrMensaje = ViewBag.GstrMensajeRespuesta;
+
+        if (LstrMensaje.Equals("La Operación se Realizó Correctamente"))
+        {
+            <script>alert('La Operación se Realizó Correctamente');</script>
+        }
+        else
+        {
+            <script>alert('Ocurrió un Fallo en la Operación');</script>
+        }
+    }
+}
+catch
+{
+
+}
+<script type="text/javascript">
+    function mtdSeleccion(LobjObjeto) {
+        if ($(LobjObjeto).attr("name") == "MTDcodigo") {
+            document.getElementById("frmCargarComboFase").submit();
+        }
+        if ($(LobjObjeto).attr("name") == "btnGuardar") {
+
+            document.getElementById("frmEntregable").submit();
+        }
+    }
+</script>
+
+
+<body onload="fncMTDcodigo();">
+    <div class="form-group row">
+        <label for="staticCodigo" class="col-sm-2 col-form-label">Codigo</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" id="staticCodigo" value="@Model.MNTcodigo">
+        </div>
+    </div>
+    @using (Html.BeginForm("mtdCargarComboFase", "cnfClsEntregable", FormMethod.Post, new { @id = "frmCargarComboFase", @class = "" }))
+    {
+        <div class="form-group row">
+            <label for="staticMetodologia" class="col-sm-2 col-form-label">Metodologia</label>
+            <div class="col-sm-10">
+                @Html.DropDownListFor(model => model.MTDcodigo,
+                    new SelectList(GobjListarMetodologia, "MTDcodigo", "MTDnombre"), "Seleccione", new { @class = "form-control" , onchange = "mtdSeleccion(this);", @required = true })
+            </div>
+        </div>
+    }
+    <script type="text/javascript">
+        function fncMTDcodigo() {
+            var e = document.getElementById("MTDcodigo");
+            var strUser = e.options[e.selectedIndex].value;
+            document.getElementById("_MTDcodigo").value = strUser;
+        }
+    </script>
+    @using (Html.BeginForm("mtdGuardarPrincipal", "cnfClsEntregable", FormMethod.Post, new { id = "frmEntregable", @name = "FrmEntregable" }))
+    {
+
+        @Html.HiddenFor(x => x.MNTcodigo)
+        <div class="form-group row">
+            <label for="staticFase" class="col-sm-2 col-form-label">Fase</label>
+            <div class="col-sm-10">
+                @if (GobjListarFase != null)
+                {
+                    @Html.DropDownListFor(model => model.MEFcodigo,
+                   new SelectList(GobjListarFase, "MEFcodigo", "MEFnombre"), "Seleccione", new { @class = "form-control", @required = true })
+                }
+            </div>
+        </div>
+
+        <input type="hidden" id="_MTDcodigo" name="MTDcodigo" value="@Model.MTDcodigo" />
+
+        <div class="form-group row">
+            @*@Html.LabelFor(x => x.MTDnombre, new { @class = "col-sm-2 col-form-label" })*@
+            <label for="staticFase" class="col-sm-2 col-form-label">Nombre</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(x => x.MNTnombre, new { htmlAttributes = new { @class = "form-control", @required = true } })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @*@Html.LabelFor(x => x.MTDnombre, new { @class = "col-sm-2 col-form-label" })*@
+            <label for="staticFase" class="col-sm-2 col-form-label">Nomenclatura</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(x => x.MNTnomenclatura, new { htmlAttributes = new { @class = "form-control", @required = true } })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @*@Html.LabelFor(x => x.MTDnombre, new { @class = "col-sm-2 col-form-label" })*@
+            <label for="staticFase" class="col-sm-2 col-form-label">Descripcion</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(x => x.MNTdescripcion, new { htmlAttributes = new { @class = "form-control", @required = true } })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(x => x.MNTestado, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.DropDownListFor(model => model.MNTestado, listEstados, " Seleccione ", new { @class = "form-control", @required = true })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @*@Html.LabelFor(x => x.MTDnombre, new { @class = "col-sm-2 col-form-label" })*@
+            <label for="staticFase" class="col-sm-2 col-form-label">Fecha de Registro</label>
+            @{
+                string tempMonth = "", tempDay = "";
+                if (DateTime.Now.Month < 10)
+                {
+                    tempMonth = "0" + DateTime.Now.Month;
+                }
+                else
+                {
+                    tempMonth = DateTime.Now.Month.ToString();
+                }
+                if (DateTime.Now.Day < 10)
+                {
+                    tempDay = "0" + DateTime.Now.Day;
+                }
+                else
+                {
+                    tempDay = DateTime.Now.Day.ToString();
+                }
+                string dateTime = DateTime.Now.Year + "-" + tempMonth + "-" + tempDay;
+            }
+            @if (Model.MNTfecha_Registro != null)
+            {
+                <div class="col-sm-10">
+                    @*@Html.EditorFor(x => x.MNTfecha_Registro, new { htmlAttributes = new { @class = "form-control-plaintext", @readonly = true } })*@
+                    <input type="text" id="MNTfecha_Registro" name="MNTfecha_Registro" class="form-control" value="@(Convert.ToDateTime(Model.MNTfecha_Registro).ToShortDateString())" readonly>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-10">
+                    @*@Html.EditorFor(x => x.MNTfecha_Registro, new { htmlAttributes = new { @class = "form-control-plaintext", @readonly = true } })*@
+                    <input type="text" id="MNTfecha_Registro" name="MNTfecha_Registro" class="form-control" value="@dateTime" readonly>
+                </div>
+            }
+        </div>
+        <div class="text-right">
+            <button type="submit" class="btn btn-success" name="btnGuardar">Guardar</button>
+        </div>
+    }
+
+
+    <br>
+
+    <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Entregable</th>
+                <th>Nomenclatura</th>
+                <th>Fase</th>
+                <th>Metodologia</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @try
+            {
+                foreach (var LobjRegistro in GobjListarEntregable)
+                {
+                    <tr class="">
+                        <td>@LobjRegistro.MNTcodigo</td>
+                        <td>@LobjRegistro.MNTnombre</td>
+                        <td>@LobjRegistro.MNTnomenclatura</td>
+                        <td>@LobjRegistro.MEFnombre</td>
+                        <td>@LobjRegistro.MTDnombre</td>
+                        <td>@LobjRegistro.MNTestado</td>
+                        <td>
+                            <a class="btn btn-warning" href="~/cnfMantenimiento/cnfClsEntregable/cnfFrmEntregableVista/@LobjRegistro.MNTcodigo">Modificar</a>
+                            <a class="btn btn-success" href="~/cnfMantenimiento/cnfClsEntregable/cnfFrmEntregableRelacionVista/@LobjRegistro.MNTcodigo">Relación</a>
+                        </td>
+                    </tr>
+                }
+            }
+            catch
+            {
+
+            }
+        </tbody>
+
+    </table>
+
+</body>

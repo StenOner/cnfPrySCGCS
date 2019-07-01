@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.539
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cnfPrySCGCS", "cnfPrySCGCS\cnfPrySCGCS.csproj", "{D3FBF8E0-7A47-453D-B86B-1C9E1561C173}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3FBF8E0-7A47-453D-B86B-1C9E1561C173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3FBF8E0-7A47-453D-B86B-1C9E1561C173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3FBF8E0-7A47-453D-B86B-1C9E1561C173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3FBF8E0-7A47-453D-B86B-1C9E1561C173}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F68ED807-E108-452A-AF83-341370A60748}
+	EndGlobalSection
+EndGlobal

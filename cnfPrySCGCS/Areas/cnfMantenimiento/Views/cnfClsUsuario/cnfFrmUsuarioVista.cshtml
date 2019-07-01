@@ -1,0 +1,164 @@
+﻿@model cnfPrySCGCS.Models.cnfUSUpUsuario
+@{
+    ViewBag.Title = "cnfFrmUsuarioVista";
+    ViewBag.subTitle = "Registrar Usuario";
+
+    List<SelectListItem> listRolUsuario = new List<SelectListItem>();
+
+    listRolUsuario.Add(new SelectListItem() { Text = "Miembro", Value = "Miembro" });
+    listRolUsuario.Add(new SelectListItem() { Text = "Jefe", Value = "Jefe" });
+    listRolUsuario.Add(new SelectListItem() { Text = "Administrador", Value = "Administrador" });
+
+    List<SelectListItem> listEstadoUsuario = new List<SelectListItem>();
+
+    listEstadoUsuario.Add(new SelectListItem() { Text = "Activo", Value = "Activo" });
+    listEstadoUsuario.Add(new SelectListItem() { Text = "Inactivo", Value = "Inactivos" });
+
+    List<cnfPrySCGCS.Models.cnfUSUpUsuario> GobjListarUsuario = ViewBag.GobjListarUsuario;
+
+    bool LblnMensaje = false;
+    try
+    {
+        LblnMensaje = ViewBag.GblnMensaje;
+    }
+    catch (Exception ex)
+    {
+
+    }
+}
+
+@if(LblnMensaje)
+{
+    string LstrMensaje = ViewBag.GstrMensajeRespuesta;
+    if (LstrMensaje.Equals("La Operación se Realizó Correctamente"))
+    {
+        <script> alert('La Operación se Realizó Correctamente');</script>
+    }
+    else
+    {
+        <script> alert('Ocurrió un Fallo en la Operación');</script>
+    }
+}
+
+<div class="">
+
+    @using (Html.BeginForm("mtdGuardar", "cnfClsUsuario", FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.USUcodigo)
+
+        <div class="form-group row">
+            <label for="staticCodigo" class="col-sm-2 col-form-label">Codigo</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control" id="staticcodigo" value="@Model.USUcodigo">
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.USUdni, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(x => x.USUdni, new { htmlAttributes = new { @class = "form-control", @placeholder = "DNI", @maxlength = 8, @required = true } })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(x => x.USUnombre, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(x => x.USUnombre, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nombre", @required = true } })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(x => x.USUapellido, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(x => x.USUapellido, new { htmlAttributes = new { @class = "form-control", @placeholder = "Apellido", @required = true } })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(x => x.USUcorreo, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(x => x.USUcorreo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Correo", @type = "email", @required = true } })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(x => x.USUtelefono, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(x => x.USUtelefono, new { htmlAttributes = new { @class = "form-control", @placeholder = "Telefono", @maxlength = 9, @required = true } })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(x => x.USUusuario, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(x => x.USUusuario, new { htmlAttributes = new { @class = "form-control", @placeholder = "Usuario", @required = true } })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(x => x.USUcontrasena, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(x => x.USUcontrasena, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contraseña", @required = true } })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(x => x.USUnivel, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.DropDownListFor(model => model.USUnivel, listRolUsuario, " Seleccione ", new { @class = "form-control", @required = true })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(x => x.USUestado, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.DropDownListFor(model => model.USUestado, listEstadoUsuario, " Seleccione ", new { @class = "form-control", @required = true })
+            </div>
+        </div>
+
+        <div class="text-right">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+
+    }
+    <br>
+
+    @*<table id="datatable" class="display" style="width:100%">*@
+    <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>DNI</th>
+                <th>Nombres y Apellidos</th>
+
+                <th>Acción</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @try
+            {
+                foreach (var LobjRegistro in GobjListarUsuario)
+                {
+                    <tr class="">
+                        <td>@LobjRegistro.USUcodigo</td>
+                        <td>@LobjRegistro.USUdni </td>
+                        <td>@LobjRegistro.USUnombre @LobjRegistro.USUapellido</td>
+
+
+                        <td><a class="btn btn-warning" href="~/cnfMantenimiento/cnfClsUsuario/cnfFrmUsuarioVista/@LobjRegistro.USUcodigo">Modificar</a></td>
+                    </tr>
+                }
+            }
+            catch
+            {
+
+            }
+        </tbody>
+
+    </table>
+
+</div>
+
+
+
+

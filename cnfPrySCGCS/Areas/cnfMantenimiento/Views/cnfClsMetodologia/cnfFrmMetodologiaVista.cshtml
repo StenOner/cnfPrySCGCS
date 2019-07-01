@@ -1,0 +1,144 @@
+﻿@model cnfPrySCGCS.Models.cnfMTDpMetodologia
+@{
+    ViewBag.Title = "Metodologias";
+    ViewBag.subTitle = "Registrar Metodologia";
+
+    List<SelectListItem> listEstados = new List<SelectListItem>();
+
+    listEstados.Add(new SelectListItem() { Text = "Activo", Value = "Activo" });
+    listEstados.Add(new SelectListItem() { Text = "Inactivo", Value = "Inactivo" });
+
+
+    List<cnfPrySCGCS.Models.cnfMTDpMetodologia> GobjListarMetodologia = ViewBag.GobjListarMetodologia;
+
+
+    bool LblnMensaje = false;
+    try
+    {
+        LblnMensaje = ViewBag.GblnMensaje;
+    }
+    catch (Exception ex)
+    {
+
+    }
+}
+@if(LblnMensaje)
+    {
+        string LstrMensaje = ViewBag.GstrMensajeRespuesta;
+
+        if (LstrMensaje.Equals("La Operación se Realizó Correctamente"))
+        {
+            <script>alert('La Operación se Realizó Correctamente');</script>
+        }
+        else
+        {
+            <script>alert('Ocurrió un Fallo en la Operación');</script>
+        }
+    }
+
+
+@using (Html.BeginForm("mtdGuardar", "cnfClsMetodologia", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.MTDcodigo)
+
+    <div class="form-group row">
+        <label for="staticCodigo" class="col-sm-2 col-form-label">Codigo</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" id="staticCodigo" value="@Model.MTDcodigo">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(x => x.MTDnombre, new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.EditorFor(x => x.MTDnombre, new { htmlAttributes = new { @class = "form-control", @required = true } })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(x => x.MTDestado, new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.DropDownListFor(model => model.MTDestado, listEstados, " Seleccione ", new { @class = "form-control", @required = true })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(x => x.MTDfecha_Registro, new { @class = "col-sm-2 col-form-label" })
+        @{
+            string tempMonth = "", tempDay = "";
+            if (DateTime.Now.Month < 10)
+            {
+            tempMonth = "0" + DateTime.Now.Month;
+            }
+            else
+            {
+            tempMonth = DateTime.Now.Month.ToString();
+            }
+            if (DateTime.Now.Day < 10)
+            {
+            tempDay = "0" + DateTime.Now.Day;
+            }
+            else
+            {
+            tempDay = DateTime.Now.Day.ToString();
+            }
+            string dateTime = DateTime.Now.Year + "-" + tempMonth + "-" + tempDay;
+        }
+        @if (Model.MTDfecha_Registro != null)
+        {
+            <div class="col-sm-10">
+                @*@Html.EditorFor(x => x.MTDfecha_Registro, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })*@
+                <input type="text" id="MTDfecha_Registro" name="MTDfecha_Registro" class="form-control" value="@(Convert.ToDateTime(Model.MTDfecha_Registro).ToShortDateString())" readonly />
+            </div>
+        }
+        else
+        {
+            <div class="col-sm-10">
+                <input type="text" id="MTDfecha_Registro" name="MTDfecha_Registro" class="form-control" value="@dateTime" readonly />
+                @*@Html.EditorFor(x => x.MTDfecha_Registro, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })*@
+            </div>
+        }
+    </div>
+
+    <div class="text-right">
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </div>
+
+}
+<br>
+
+@*<table id="datatable" class="display" style="width:100%">*@
+<table id="datatable" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Metodologia</th>
+            <th>Fecha de Registro</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var LobjRegistro in GobjListarMetodologia)
+        {
+            <tr class="">
+                <td>@LobjRegistro.MTDcodigo</td>
+                <td>@LobjRegistro.MTDnombre</td>
+                @try
+                {
+                    string LstrFechaActual = Convert.ToDateTime(LobjRegistro.MTDfecha_Registro).ToString("d");
+                    <td>@LstrFechaActual</td>
+                }
+                catch
+                {
+
+                }
+                <td>@LobjRegistro.MTDestado</td>
+                <td><a class="btn btn-warning" href="~/cnfMantenimiento/cnfClsMetodologia/cnfFrmMetodologiaVista/@LobjRegistro.MTDcodigo">Modificar</a></td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+

@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Iniciar Sesion";
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>@ViewBag.Title</title>
+
+        <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/css/login.css" rel="stylesheet" />
+    </head>
+
+    <body class="text-center">      
+            @using (Html.BeginForm("mtdSeguridad", "cnfClsSeguridad", FormMethod.Post, new { @class = "form-signin" }))
+            {
+                <h1 class="h3 mb-3 font-weight-normal">Iniciar Sesion</h1>
+                <label for="inputUsuario" class="sr-only">Usuario</label>
+                <input type="text" id="Usuario" name="Usuario" class="form-control" placeholder="Usuario" required autofocus>
+
+                <label for="inputContraseña" class="sr-only">Contraseña</label>
+                <input type="password" id="Contraseña" name="Contraseña" class="form-control" placeholder="Contraseña" required>
+                @*<div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                    </div>*@
+                <button data-ajax="true" class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+                <p class="mt-5 mb-3 text-muted">&copy; 2019</p>
+            }
+        <script src="~/Content/js/jquery-3.4.1.min.js"></script>
+        <script src="~/Content/js/bootstrap.min.js"></script>
+        <script src="~/Content/js/ini.js"></script>
+        <script src="~/Content/js/jquery.form.js"></script>
+        <script src="~/Content/js/jquery.validate.min.js"></script>
+        <script src="~/Content/js/jquery.validate.unobtrusive.min.js"></script>
+    </body>
+</html>

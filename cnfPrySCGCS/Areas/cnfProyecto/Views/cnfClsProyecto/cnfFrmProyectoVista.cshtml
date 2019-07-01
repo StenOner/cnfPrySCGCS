@@ -1,0 +1,158 @@
+﻿@model cnfPrySCGCS.Models.cnfPRYpProyecto
+@{
+    ViewBag.Title = "Proyectos";
+    ViewBag.subTitle = "Registrar Proyecto";
+
+    List<cnfPrySCGCS.Models.cnfMTDpMetodologia> GobjListarMetodologia = ViewBag.GobjListarMetodologia;
+    List<cnfPrySCGCS.Models.cnfPRYpProyecto> GobjListarProyecto = ViewBag.GobjListarProyecto;
+
+
+    var GobjUsuario = new cnfPrySCGCS.Models.cnfUSUpUsuario().mtdObtener(cnfPrySCGCS.Models.SessionHelper.GetUser());
+
+    List<SelectListItem> listEstados = new List<SelectListItem>();
+
+    listEstados.Add(new SelectListItem() { Text = "Activo", Value = "Activo" });
+    listEstados.Add(new SelectListItem() { Text = "Inactivo", Value = "Inactivo" });
+
+
+}
+
+@using (Html.BeginForm("mtdGuardar", "cnfClsProyecto", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.PRYcodigo)
+    <input type="hidden" id="USUcodigo" name="USUcodigo" value="@GobjUsuario.USUcodigo" />
+    <div class="form-group row">
+        <label for="staticCodigo" class="col-sm-2 col-form-label">Codigo</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" id="staticCodigo" value="@Model.PRYcodigo">
+        </div>
+    </div>
+
+    //error
+    <div class="form-group row">
+        <label for="staticJefeProyecto" class="col-sm-2 col-form-label">Jefe de Proyecto</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control"
+                   id="staticJefeProyecto" value="@GobjUsuario.USUnombre @GobjUsuario.USUapellido">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @*@Html.LabelFor(x => x.PRYnombre, new { @class = "col-sm-2 col-form-label" })*@
+        <label for="" class="col-sm-2 col-form-label">Nombre</label>
+
+        <div class="col-sm-10">
+            @Html.EditorFor(x => x.PRYnombre, new { htmlAttributes = new { @class = "form-control", @required = true } })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @*@Html.LabelFor(x => x.PRYdescripcion, new { @class = "col-sm-2 col-form-label" })*@
+        <label for="" class="col-sm-2 col-form-label">Descripcion</label>
+
+        <div class="col-sm-10">
+            @Html.EditorFor(x => x.PRYdescripcion, new { htmlAttributes = new { @class = "form-control", @required = true } })
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        @*@Html.LabelFor(x => x.cnfMTDpMetodologia.MTDnombre, new { @class = "col-sm-2 col-form-label" })*@
+        <label for="" class="col-sm-2 col-form-label">Metodologia</label>
+
+        <div class="col-sm-10">
+            @Html.DropDownListFor(model => model.MTDcodigo,
+                 new SelectList(GobjListarMetodologia, "MTDcodigo", "MTDnombre"), "Seleccione", new { @class = "form-control", @required = true })
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        @*@Html.LabelFor(x => x.PRYestado, new { @class = "col-sm-2 col-form-label" })*@
+        <label for="" class="col-sm-2 col-form-label">Estado</label>
+
+        <div class="col-sm-10">
+            @Html.DropDownListFor(model => model.PRYestado, listEstados, " Seleccione ", new { @class = "form-control", @required = true })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="staticoFechaRegistro" class="col-sm-2 col-form-label">Fecha de Registro</label>
+        @{
+            string tempMonth = "", tempDay = "";
+            if (DateTime.Now.Month < 10)
+            {
+                tempMonth = "0" + DateTime.Now.Month;
+            }
+            else
+            {
+                tempMonth = DateTime.Now.Month.ToString();
+            }
+            if (DateTime.Now.Day < 10)
+            {
+                tempDay = "0" + DateTime.Now.Day;
+            }
+            else
+            {
+                tempDay = DateTime.Now.Day.ToString();
+            }
+            string dateTime = DateTime.Now.Year + "-" + tempMonth + "-" + tempDay;
+        }
+        @if (Model.PRYfecha_Registro != null)
+        {
+            <div class="col-sm-10">
+                <input type="text" id="PRYfecha_Registro" name="PRYfecha_Registro" class="form-control" value="@(Convert.ToDateTime(Model.PRYfecha_Registro).ToShortDateString())" readonly>
+            </div>
+        }
+        else
+        {
+            <div class="col-sm-10">
+                <input type="text" id="PRYfecha_Registro" name="PRYfecha_Registro" class="form-control" value="@dateTime" readonly>
+            </div>
+        }
+    </div>
+
+
+    <div class="text-right">
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </div>
+
+}
+<br>
+
+@*<table id="datatable" class="display" style="width:100%">*@
+<table id="datatable" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Proyecto</th>
+            <th>Jefe de Proyecto</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @try
+        {
+            foreach (var LobjRegistro in GobjListarProyecto)
+            {
+                <tr class="">
+                    <td>@LobjRegistro.PRYcodigo</td>
+                    <td>@LobjRegistro.PRYnombre</td>
+                    <td>@GobjUsuario.USUnombre @GobjUsuario.USUapellido</td>
+                    <td>@LobjRegistro.PRYestado</td>
+                    <td><a class="btn btn-warning" href="~/cnfProyecto/cnfClsProyecto/cnfFrmProyectoVista/@LobjRegistro.PRYcodigo">Modificar</a></td>
+                </tr>
+            }
+        }
+        catch
+        {
+
+        }
+    </tbody>
+
+</table>
+
+
+
