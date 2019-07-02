@@ -1,0 +1,42 @@
+﻿@model IEnumerable<cnfPrySCGCS.Models.cnfSEVpSolicitudEvaluador>
+
+@{
+    ViewBag.Title = "Solicitudes a Evaluar";
+}
+
+<h2>Solicitudes a Evaluar</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              Codigo de Solicitud
+            </th>
+            <th>Proyecto</th>
+            <th>Solicitante</th>           
+            <th>Acciones</th>
+
+        </tr>
+
+    </thead>
+    
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SOLcodigo)
+            </td>
+            <td>
+                @item.cnfSOLpSolicitud.cnfPRYpProyecto.PRYnombre
+            </td>
+            <td>
+                @item.cnfSOLpSolicitud.cnfUSUpUsuario.USUnombre @item.cnfSOLpSolicitud.cnfUSUpUsuario.USUapellido
+            </td>           
+            <td>
+                @Html.ActionLink("Evaluar", "EvaluarSolicitud", new { id = item.SOLcodigo }) |               
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

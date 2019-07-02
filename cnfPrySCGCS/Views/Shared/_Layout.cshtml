@@ -16,6 +16,8 @@
 
 
     <link href="~/Content/css/datatables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
     @*<link href="~/Content/css/dataTables.bootstrap4.min.css" rel="stylesheet" />*@
 
 </head>
@@ -142,6 +144,13 @@
                                         <a href="@Url.Action("cnfFrmSolicitudVista", null, new { area = "cnfCambios",
                                                 controller = "cnfClsSolicitud" }, Request.Url.Scheme)" class="nav-link">
                                             Gestionar Solicitud
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("cnfFrmVerSolicitudesEvaluar", null, new { area = "cnfCambios",
+                                                controller = "cnfClsSolicitud" }, Request.Url.Scheme)" class="nav-link">
+                                            Pendientes a Evaluar
                                         </a>
                                     </li>
                                 </ul>

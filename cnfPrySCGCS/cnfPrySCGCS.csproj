@@ -173,6 +173,9 @@
     <Content Include="Areas\cnfCambios\Views\_ViewStart.cshtml" />
     <Content Include="Areas\cnfCambios\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\cnfCambios\Views\cnfClsSolicitud\cnfFrmSolicitudVista.cshtml" />
+    <Content Include="Areas\cnfCambios\Views\cnfClsSolicitud\cnfFrmAsignarEvaluador.cshtml" />
+    <Content Include="Areas\cnfCambios\Views\cnfClsSolicitud\cnfFrmVerSolicitudesEvaluar.cshtml" />
+    <Content Include="Areas\cnfCambios\Views\cnfClsSolicitud\EvaluarSolicitud.cshtml" />
     <None Include="Properties\PublishProfiles\cnfPrySCGCS - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\cnfPrySCGCS - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\cnfpryscgcs1 - FTP.pubxml" />

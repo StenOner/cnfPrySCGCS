@@ -14,6 +14,11 @@ namespace cnfPrySCGCS.Areas.cnfCambios.Controllers
     {
         private readonly cnfModelo _db = new cnfModelo();
 
+        private cnfSOLpSolicitud PobjSolicitud = new cnfSOLpSolicitud();
+
+        private cnfPMIpProyectoMiembro PobjProyectoMiembro = new cnfPMIpProyectoMiembro();
+
+
         // GET: cnfCambios/cnfClsSolicitud
         public ActionResult cnfFrmSolicitudVista(int id=0)
         {
@@ -98,6 +103,46 @@ namespace cnfPrySCGCS.Areas.cnfCambios.Controllers
             //ViewBag.Solicitudes = _db.cnfSOLpSolicitud.Include("cnfPRYpProyecto").Include("cnfUSUpUsuario").ToList();
 
             //return View("cnfFrmSolicitudVista", solicitud);
+        }
+
+        public ActionResult EvaluarSolicitud(int id) // id solicitud
+        {
+            return View(PobjSolicitud.obtenterSolicitud(id));
+        }
+
+        public ActionResult cnfFrmVerSolicitudesEvaluar()
+        {
+            cnfPMIpProyectoMiembro objMiembroProyecto = PobjProyectoMiembro.mtdObtenerMiembro(SessionHelper.GetUser());
+
+            return View(PobjSolicitud.mtdObtenterSolicitudEvaluar(objMiembroProyecto.PMIcodigo));
+        }
+
+
+        public ActionResult cnfFrmAsignarEvaluador(int id) //SOLcodigo
+        {
+            cnfSEVpSolicitudEvaluador objSolicitudEvaluador = new cnfSEVpSolicitudEvaluador();
+            cnfSOLpSolicitud LobjSolicitud = PobjSolicitud.obtenterSolicitud(id);
+
+            objSolicitudEvaluador.SOLcodigo = id;
+
+            // Listamos Miembros del proyecto de la solicitud y la solicitud para ver su detalle
+            ViewBag.MiembrosProyecto = PobjProyectoMiembro.mtdCargarMiembrosProyecto((int)LobjSolicitud.PRYcodigo);
+            ViewBag.SolicitudVer = LobjSolicitud;
+
+            return View(objSolicitudEvaluador);
+        }
+
+        public ActionResult GuardarEvaluador(cnfSEVpSolicitudEvaluador xLobjEvaluador)
+        {
+            if (ModelState.IsValid)
+            {
+                xLobjEvaluador.mtdGuardar();
+            }
+            else
+            {
+                return View("cnfFrmAsignarEvaluador", xLobjEvaluador);
+            }
+            return Redirect("~/cnfCambios/cnfClsSolicitud/cnfFrmSolicitudVista");
         }
 
         [HttpGet]

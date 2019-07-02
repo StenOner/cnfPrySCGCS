@@ -1,0 +1,33 @@
+﻿@model cnfPrySCGCS.Models.cnfSOLpSolicitud
+@{
+    ViewBag.Title = "Evaluar Solicitud";
+}
+
+<h2>Evaluar Solicitud</h2>
+
+<div class="card my-5">
+    <div class="card-header">
+        Proyecto: @Model.cnfPRYpProyecto.PRYnombre
+    </div>
+    <div class="card-body">
+        Contenido:
+        <p>
+            @Model.SOLsolicitud
+        </p>
+
+        <p>Elemento de Configuracion : @Model.cnfPECpProyectoElementoConfiguracion.PECnombre</p>
+        <p>Entregable  : @Model.cnfMNTpMetodologiaEntregable.MNTnombre</p>
+        <p>Nomenclatura - Entregable  : @Model.cnfMNTpMetodologiaEntregable.MNTnomenclatura</p>
+
+    </div>
+    <div class="card-footer">
+        <p>Solicitante: @Model.cnfUSUpUsuario.USUnombre @Model.cnfUSUpUsuario.USUapellido</p>
+        Fecha de Solicitud: @Model.SOLfecha_Registro
+    </div>
+</div>
+
+@using (Html.BeginForm("GuardarEvaluacion", "cnfClsSolicitud"))
+{
+
+}
+

@@ -5,8 +5,13 @@ namespace cnfPrySCGCS.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using System.Linq;
 
+    using System.Linq;
+    using System.Data.Entity;
+
+    using System.Data.Entity.Validation;
+    using System.Web;
+    using System.IO;
     [Table("cnfPMIpProyectoMiembro")]
     public partial class cnfPMIpProyectoMiembro
     {
@@ -52,6 +57,46 @@ namespace cnfPrySCGCS.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cnfSMCpSolicitudMiembroCambio> cnfSMCpSolicitudMiembroCambio { get; set; }
+
+        public List<cnfPMIpProyectoMiembro> mtdCargarMiembrosProyecto(int idProyecto)
+        {
+            var miembros = new List<cnfPMIpProyectoMiembro>();
+            try
+            {
+                using (var db = new cnfModelo())
+                {
+                    miembros = db.cnfPMIpProyectoMiembro
+                        .Include("cnfUSUpUsuario")
+                        .Where(x => x.PRYcodigo == idProyecto)
+                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return miembros;
+        }
+
+        public cnfPMIpProyectoMiembro mtdObtenerMiembro(int idUsuario)
+        {
+            var miembros = new cnfPMIpProyectoMiembro();
+            try
+            {
+                using (var db = new cnfModelo())
+                {
+                    miembros = db.cnfPMIpProyectoMiembro
+                        .Include("cnfUSUpUsuario")
+                        .Where(x => x.USUcodigo == idUsuario).SingleOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return miembros;
+        }
+
 
         public List<cnfPRYpProyecto> mtdCargarComboProyecto(int LintCodigoUsuario)
         {

@@ -1,0 +1,51 @@
+﻿@model cnfPrySCGCS.Models.cnfSEVpSolicitudEvaluador
+@{
+    ViewBag.Title = "Asignar Evaluador de Solicitud";
+
+    cnfPrySCGCS.Models.cnfSOLpSolicitud PobjSolicitud = ViewBag.SolicitudVer;
+    List<cnfPrySCGCS.Models.cnfPMIpProyectoMiembro> lstMiembros = ViewBag.MiembrosProyecto;
+
+}
+
+<h2>Asignar Evaluador</h2>
+
+
+<div class="card my-5">
+    <div class="card-header">Header</div>
+    <div class="card-body">
+        Contenido:
+        <p>
+            @PobjSolicitud.SOLsolicitud
+        </p>
+    </div>
+    <div class="card-footer">
+        Fecha de Solicitud: @PobjSolicitud.SOLfecha_Registro
+    </div>
+</div>
+
+
+@using (Html.BeginForm("GuardarEvaluador", "cnfClsSolicitud", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.SEVcodigo)
+    @Html.HiddenFor(model => model.SOLcodigo)
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.PMIcodigo, htmlAttributes: new { @class = "col-form-label col-sm-2" })
+        <div class="col-sm-10">
+            @Html.DropDownListFor(model => model.PMIcodigo,
+           new SelectList((from s in lstMiembros
+                           select new
+                           {
+                               PMIcodigo = s.PMIcodigo,
+                               FullName = s.cnfUSUpUsuario.USUnombre + " " + s.cnfUSUpUsuario.USUapellido
+                           }),
+                           "PMIcodigo",
+                           "FullName",
+                           null) , " Seleccione ", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.PMIcodigo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+}
+
+
